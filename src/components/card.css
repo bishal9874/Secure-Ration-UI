@@ -1,0 +1,24 @@
+.card {
+    
+    max-width: 800px; /* adjust as needed */
+    max-height: 600px; /* adjust as needed */
+    background-image: linear-gradient(135deg, #d8e3db 30%, #f8f8f8 100%);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin: 1rem;
+    
+  }
+  
+  @media only screen and (max-width: 620px) {
+    .card {
+      width: 90vw;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+  
+  @media only screen and (max-height: 670px) {
+    .card {
+      height: 500px;
+    }
+  }

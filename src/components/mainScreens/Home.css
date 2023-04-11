@@ -1,0 +1,50 @@
+
+
+.Home{
+    background-color: #dddbf5;
+    overflow: auto;
+    
+}
+.Home .saparator img{
+    height: 30%;
+    width: 32%;
+    float: right;
+    overflow: auto;
+}
+.Home .saparator2 {
+    display: flex;
+    margin:10px;
+}
+.Home .saparator2 img{
+    height: 200px;
+    width: 280px;
+}
+
+/* .items{
+    
+    min-height:20rem;
+    min-width: 30rem;
+    padding-left: 40px;
+}
+.items img{
+    width: 100%;
+    height: 100%;
+    border-radius: 2rem;
+    pointer-events: none;
+}
+.inner-carousel{
+    display: flex;
+}
+.slider{
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 2rem;
+    margin: 10px;
+} */
+@media only screen and (max-width:1024px) {
+    .Home .saparator img{
+        height: 30%;
+        width: 30%;
+        align-items: center;
+    }
+}
