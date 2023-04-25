@@ -74,7 +74,7 @@ header .nav-btn{
         position: fixed;
         top:0;
         left: 0;
-        height: 50%;
+        height: 80%;
         width: 100%;
         display: flex;
         flex-direction: column;

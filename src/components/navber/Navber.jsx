@@ -15,7 +15,7 @@ const Navber = () => {
 
 	return (
 		<header>
-			<img className='logo_image' src="src/assets/lol.png" alt="" />
+			<img className='logo_image' src="src/assets/lol.png"/>
 			<h2><span className='logo-text'>Secure</span>-Ration</h2>
 			<nav ref={navRef}>
 				<a href="/#">Home</a>

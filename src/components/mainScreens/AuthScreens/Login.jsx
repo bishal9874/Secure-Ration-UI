@@ -1,13 +1,21 @@
 import React from "react";
 import Card from "../../Card";
+import FaceAuth from "./FaceAuth";
 import "./Login.css";
+import LoginCam from "./login_camera/LoginCam";
+import { useNavigate } from 'react-router-dom';
 const Login = () => {
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    navigate('/logincam');
+  };
   return (
     <>
       <section className="section">
         <div className="img_sec">
           
-            <img className="loginIMage" src="src/assets/intro.png" alt="" />
+            <img className="loginIMage" src="src/assets/intro.png"  />
          
         </div>
         <div>
@@ -15,7 +23,7 @@ const Login = () => {
             <span className="login_logo_text">Secure</span>-Ration
           </h3></a>
           
-          <form>
+          <form onSubmit={handleLogin}>
             <div className="inputs_container">
               <input type="email" placeholder="Email" />
               <input type="text" placeholder="Ration ID" />
@@ -27,8 +35,8 @@ const Login = () => {
                KYC Sign Up
               </a>{" "}
             </p>
+            <button type="submit" className="login_button">log in</button>
 
-            <input type="submit" value="Log In" className="login_button" />
           </form>
         </div>
         <div>

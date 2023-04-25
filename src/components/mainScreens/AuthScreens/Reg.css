@@ -42,6 +42,9 @@ a{
   .already_register{
     padding:10px;
   }
+  .tc{
+    margin-left: 20%;
+  }
   
   .reg-inputs_container {
     display: flex;

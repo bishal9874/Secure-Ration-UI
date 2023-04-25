@@ -8,14 +8,17 @@ const videoConstraints = {
   facingMode: "user",
 };
 
-const Camera = () => {
+const Camera = ({onCapturePhoto}) => {
  const webcamRef = useRef(null);
   const [url, setUrl] = React.useState(null);
  
   const capturePhoto = React.useCallback(async () => {
     const imageSrc = webcamRef.current.getScreenshot();
     setUrl(imageSrc);
-  }, [webcamRef]);
+    const blob = await (await fetch(imageSrc)).blob();
+    const file = new File([blob], 'image.jpg', {type: 'image/jpeg'});
+    onCapturePhoto(file); 
+  }, [webcamRef, onCapturePhoto]);
  
   const onUserMedia = (e) => {
     console.log(e);
