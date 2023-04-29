@@ -1,54 +1,62 @@
 import React from 'react'
 import Camera from './camera/Camera'
 import "./Reg.css"
-import { TextField, FormControlLabel, Checkbox, Button, Box, Alert } from '@mui/material';
-import { useState } from 'react';
+import { TextField, FormControlLabel, Checkbox, Button, Box, Alert,Typography} from '@mui/material';
+import { useState ,useEffect} from 'react';
+import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
+import { useSignUp_userMutation } from '../../../services/rationApi';
+import { storeToken ,getToken} from '../../../services/localStorage';
+import { setUsertoken } from "../../../features/authSlice";
+
+
 const Reg = () => {
-  const [error, setError] = useState({
-    status:false,
-    msg:"",
-    type:""
-  })
-  const [errorMessages, setErrorMessages] = useState({});
+
+
+
+  const [server_error,setServerError] = useState({});
   const [imageData, setImageData] = useState(null); // define state variable to hold captured image data
   const [isCameraReady, setIsCameraReady] = useState(false);
+  const dispatch = useDispatch()
   const onCapturePhoto = (imageData) => {
     setImageData(imageData);
     setIsCameraReady(true); // update the state with the captured image data
   };
-  console.log(imageData);
-
+  // console.log(imageData);
+                                                                     
   const navigate = useNavigate();
-  const handlesubmit = (e) => {
+  const [registerUser, {isLoading}] = useSignUp_userMutation();
+  const handlesubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
+    // data.append('face_image', imageData);
     const registationData = {
       email: data.get('email'),
       name:data.get('name'),
       rationId:data.get('rationId'),
       password: data.get('password'),
-      password_confirmation: data.get('password2'),
+      password2: data.get('password2'),
       tc: data.get('tc'),
-      image: imageData,
+      face_image: imageData,
     }
-    if (registationData.name && registationData.email && registationData.password && registationData.password_confirmation && registationData.tc !== null) {
-     if(registationData.image !== null){
-      if (registationData.password === registationData.password_confirmation) {
-        console.log(registationData);
-        document.getElementById('registration-form').reset()
-        setError({ status: true, msg: "Registration Successful", type: 'success' })
-        navigate('/dashboard')
-      } else {
-        setError({ status: true, msg: "Password and Confirm Password Doesn't Match", type: 'error' })
-      }
-     }else{
-      setError({ status: true, msg: "face image is required", type: 'error' })
-     }
-    } else {
-      setError({ status: true, msg: "All Fields are Required", type: 'error' })
-    }
-  }
+  const res = await registerUser(registationData);
+  if(res.error){
+    console.log(res.error.data.errors)
+    setServerError(res.error.data.errors)
+  }if(res.data){
+    storeToken(res.data.token)
+    let {access_token} = getToken()
+    dispatch(setUsertoken({access_token:access_token}))
+    navigate("/dashboard");
+    
+  }  
+}
+
+  let { access_token } = getToken()
+  useEffect(() => {
+    dispatch(setUsertoken({ access_token: access_token }))
+  }, [access_token, dispatch])
+
   return (
     <>
     <section className="reg-section">
@@ -62,16 +70,21 @@ const Reg = () => {
           <span className="reg-login_logo_text">Secure</span>-Ration
         </h3></a>
         <div>
-          {error.status ? <Alert severity={error.type}>{error.msg}</Alert> : ''}</div>
+          {server_error.non_field_errors ? <Alert severity='error'>{server_error.non_field_errors[0]}</Alert> : ''}</div>
         <form id='registration-form' onSubmit={handlesubmit}>
           <div className="reg-inputs_container">
-            <input type="email" required name="email" id='email' placeholder="Email" />
-            <input type="text" required name="name" id='name'  placeholder="Name" />
-            <input type="text"  required name="rationId" id='rationId'  placeholder="Ration ID" />
-            <input type="password" name="password"  required id='password' placeholder="Password" />
-            <input type="password2" name="password2"  required id='password2'  placeholder="confirm Password" />
-            <div className='tc'><FormControlLabel  control={<Checkbox value="true" required color="primary" name="tc" id="tc" />} label="I agree to term and condition." /> </div>
-           
+            <input type="email" name="email" id='email' placeholder="Email" />
+            {server_error.email ? <Typography style={{fontSize:12,color:'red'}}> {server_error.email[0]}</Typography> : " "}
+            <input type="text" name="name" id='name'  placeholder="Name" />
+            {server_error.name ? <Typography style={{fontSize:12,color:'red'}}> {server_error.name[0]}</Typography> : " "}
+            <input type="text"  name="rationId" id='rationId'  placeholder="Ration ID" />
+            {server_error.rationId ? <Typography style={{fontSize:12,color:'red'}}> {server_error.rationId[0]}</Typography> : " "}
+            <input type="password" name="password"  id='password' placeholder="Password" />
+            {server_error.password ? <Typography style={{fontSize:12,color:'red'}}> {server_error.password[0]}</Typography> : " "}
+            <input type="password2" name="password2"  id='password2'  placeholder="confirm Password" />
+            {server_error.password2 ? <Typography style={{fontSize:12,color:'red'}}> {server_error.password2[0]}</Typography> : " "}
+            <div className='tc'><FormControlLabel  control={<Checkbox value="true" color="primary" name="tc" id="tc" />} label="I agree to term and condition." /> </div>
+            {server_error.tc ? <span style={{fontSize:12,color:'red'}}> {server_error.tc[0]}</span> : " "}
           </div>
           <p className='already_register'>
             I have already register?{" "}
@@ -86,6 +99,7 @@ const Reg = () => {
       </div>
       <div>
         <Camera onCapturePhoto={onCapturePhoto}/>
+        {server_error.face_image ? <span style={{fontSize:12,color:'red'}}> {server_error.face_image[0]}</span> : " "}
       </div>
     </section>
   </>

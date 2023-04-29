@@ -1,13 +1,13 @@
 import React, { useRef,useEffect,useState } from "react";
 import Webcam from "react-webcam";
-import "./Camera.css";
+import "./LoginCam.css";
 
 const videoConstraints = {
   width: 340,
   facingMode: "user",
 };
 
-const Camera = ({onCapturePhoto}) => {
+const LoginCamera = ({onCapturePhoto}) => {
  const webcamRef = useRef(null);
   const [url, setUrl] = React.useState(null);
  
@@ -16,7 +16,13 @@ const Camera = ({onCapturePhoto}) => {
     setUrl(imageSrc);
     const blob = await (await fetch(imageSrc)).blob();
     const file = new File([blob], 'image.jpg', {type: 'image/jpeg'});
-    onCapturePhoto(file); 
+    if (typeof onCapturePhoto === 'function') {
+        onCapturePhoto(file);
+      } else {
+        console.error('onCapturePhoto is not a function');
+      }
+      
+    
   }, [webcamRef, onCapturePhoto]);
  
   const onUserMedia = (e) => {
@@ -36,10 +42,10 @@ const Camera = ({onCapturePhoto}) => {
         />
       </div>
       <div>
-        <button className="Capture" onClick={capturePhoto}>
+        <button className="LoginCapture" onClick={capturePhoto}>
           Capture
         </button>
-        <button className="Refresh" onClick={() => setUrl(null)}>
+        <button className="LoginRefresh" onClick={() => setUrl(null)}>
           Refresh
         </button>
         {url && (
@@ -52,4 +58,4 @@ const Camera = ({onCapturePhoto}) => {
   );
 };
 
-export default Camera;
+export default LoginCamera;
