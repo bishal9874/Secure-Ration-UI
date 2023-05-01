@@ -22,9 +22,10 @@ const Login = () => {
       rationId: data.get('rationId'),
       password: data.get('password'),
     }
-    console.log(loginData);
+    
     const res = await loginUser(loginData);
     if(res.error){
+      console.log(res)
       console.log(res.error.data.errors)
       setServerError(res.error.data.errors)
 

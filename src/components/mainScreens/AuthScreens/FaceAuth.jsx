@@ -4,9 +4,9 @@ import { useState ,useEffect } from "react";
 import LoginCamera from "./login_camera/LoginCamera";
 import { useFaceVerify_userMutation } from "../../../services/rationApi";
 import { CircularProgress, Typography ,Alert} from '@mui/material';
-import { getToken, storeToken } from "../../../services/localStorage";
+import { getToken, storeToken, getverify } from "../../../services/localStorage";
 import { useDispatch } from "react-redux";
-import { setUsertoken } from "../../../features/authSlice";
+import { setUsertoken, unSetUsertoken } from "../../../features/authSlice";
 import { useNavigate } from 'react-router-dom';
 
 const FaceAuth = () => {
@@ -40,6 +40,7 @@ const FaceAuth = () => {
       let { access_token } = getToken();
       dispatch(setUsertoken({ access_token: access_token }));
       navigate('/dashboard');
+      
     }
   };
   let { access_token } = getToken()

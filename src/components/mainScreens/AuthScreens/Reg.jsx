@@ -47,7 +47,7 @@ const Reg = () => {
     storeToken(res.data.token)
     let {access_token} = getToken()
     dispatch(setUsertoken({access_token:access_token}))
-    navigate("/dashboard");
+    navigate("/userkyc");
     
   }  
 }

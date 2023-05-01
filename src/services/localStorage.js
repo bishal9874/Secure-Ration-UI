@@ -1,24 +1,34 @@
-const storeToken = (value) =>{
-    if(value) {
-        // console.log("Store Token")
-        const {access, refresh } = value
+import Cookies from 'js-cookie';
 
-        localStorage.setItem('access_token',access)
-        localStorage.setItem('refresh_token',refresh)
+const storeToken = (value) => {
+  if (value) {
+    const { access, refresh} = value;
+    Cookies.set('access_token', access);
+    Cookies.set('refresh_token', refresh);
+
+  }
+};
+
+const getverify =(value) =>{
+    if(value){
+        const { isverify } = value;
+        Cookies.set('isfaceVerify', isverify);
     }
 }
+const getToken = () => {
+  const access_token = Cookies.get('access_token');
+  const refresh_token = Cookies.get('refresh_token');
+  return { access_token, refresh_token };
+};
 
-const getToken = () =>{
-    let access_token = localStorage.getItem('access_token')
-    let refresh_token = localStorage.getItem('refresh_token')
+const removeToken = () => {
+  Cookies.remove('access_token');
+  Cookies.remove('refresh_token');
+};
 
-    return {access_token,refresh_token}
+const getIsverifyFace =() =>{
+    const isfaceVerify = Cookies.get('isfaceVerify');
+    return isfaceVerify
 }
 
-const removeToken = () =>
-{
-    localStorage.removeItem('access_token')
-    localStorage.removeItem('refresh_token')
-}
-
-export {storeToken , getToken, removeToken}
+export { storeToken, getToken, removeToken,getIsverifyFace,getverify };

@@ -9,6 +9,7 @@ export const store = configureStore({
   reducer: {
     [rationApi.reducerPath]: rationApi.reducer,
     auth:authReducer
+    
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(rationApi.middleware),

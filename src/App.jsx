@@ -9,6 +9,7 @@ import Reg from "./components/mainScreens/AuthScreens/Reg";
 import FaceAuth from "./components/mainScreens/AuthScreens/FaceAuth";
 import Dashboard from "./components/mainScreens/Dashboard";
 import { useSelector } from "react-redux";
+import UserKyc from "./components/mainScreens/AuthScreens/userKYC/UserKyc";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -33,12 +34,17 @@ function App() {
           />
           <Route
             path="/signup"
-            element={access_token ? <Navigate to={"/dashboard"} /> : <Reg />}
+            element={/*access_token ? <Navigate to={"/dashboard"} /> : */<Reg />}
+          />
+           <Route
+            path="/userkyc"
+            element={access_token ? <UserKyc/> : <Reg/>}
           />
           <Route
             path="/logincam"
             element={access_token ? <FaceAuth /> : <Navigate to={"/login"} />}
           />
+          
 
           <Route path="*" element={<h1>Error 404 Page not found !!</h1>} />
         </Routes>

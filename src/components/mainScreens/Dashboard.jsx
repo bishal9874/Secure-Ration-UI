@@ -5,6 +5,8 @@ import Navber from '../navber/Navber';
 import './Dashboard.css'
 import { useGetLogged_userQuery } from '../../services/rationApi';
 import { useEffect, useState } from 'react';
+import { useDispatch } from "react-redux";
+import { setUsertoken,unSetUsertoken } from '../../features/authSlice';
 const Dashboard = () => {
   const navigate = useNavigate()
   const {access_token} = getToken()
@@ -12,7 +14,7 @@ const Dashboard = () => {
   console.log(data)
   // Assuming face_image_data is the binary image data
   // const base64Data = btoa(String.fromCharCode(...new Uint8Array()));
-
+  const dispatch = useDispatch()
   const [userData, setUserData] = useState({
     email:"",
     name:"",
@@ -41,6 +43,12 @@ const Dashboard = () => {
       });
     }
   }, [isSuccess, data]);
+
+  // let { access_token } = getToken()
+  useEffect(() => {
+    dispatch(setUsertoken({ access_token: access_token }))
+  }, [access_token, dispatch])
+
   
   return <>
   
